@@ -11,7 +11,6 @@ let kind: InfovizoinTaskDefinition = {
 	type: 'shell'
 };
 let taskProvider: vscode.Disposable | undefined;
-
 export function activate(_context: vscode.ExtensionContext): void {
 	console.log('Congratulations, your extension "Infovizion" is now active!');
 	_registerCommand(_context, 'infovizion-tools.qvd_preview', previewQvd);
@@ -22,10 +21,11 @@ export function activate(_context: vscode.ExtensionContext): void {
 		inqlikEditorTask( ['expression', 'migrate'],'Qlik Expression. Migrate file to new format (App.variables)');
 	});
 	_registerCommand(_context, 'infovizion-tools.qvs_check', () => {	
-		qvsEditoTask( ['qvs', '--command', 'check'],'Check Qlik load script for errors');
+		qvsEditorTask( ['qvs', '--command', 'check'],'Check Qlik load script for errors');
 	});
+	var runCommandParam = vscode.workspace.getConfiguration().get('infovizion.run_command','just_reload');
 	_registerCommand(_context, 'infovizion-tools.qvs_check_and_reload', () => {	
-		qvsEditoTask( ['qvs', '--command', 'check_and_reload'],'Check script for errors and run reload task on success');
+		qvsEditorTask( ['qvs', '--command', runCommandParam],'Check script for errors and run reload task on success');
 	});
 }
 
@@ -41,18 +41,18 @@ function inqlikEditorTask(args: string[], description: string) {
 	}
 	let filePath = textEditor.document.fileName;
 	args.push(filePath);
-	let task = new vscode.Task(kind, description, 'qlik-expressions', new vscode.ShellExecution('ivtool', args),
+	let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qlik-expressions', new vscode.ShellExecution('ivtool', args),
 		'$qlik-expressions');
 	vscode.tasks.executeTask(task);
 }
-function qvsEditoTask(args: string[], description: string) {
+function qvsEditorTask(args: string[], description: string) {
 	let textEditor = vscode.window.activeTextEditor;
 	if (textEditor === undefined) {
 		return;
 	}
 	let filePath = textEditor.document.fileName;
 	args.push(filePath);
-	let task = new vscode.Task(kind, description, 'qvs', new vscode.ShellExecution('ivtool', args),
+	let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qvs', new vscode.ShellExecution('ivtool', args),
 		'$qlik');
 	vscode.tasks.executeTask(task);
 }
