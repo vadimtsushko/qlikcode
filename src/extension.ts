@@ -6,6 +6,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as cp from 'child_process';
 import * as vscode from 'vscode';
+import { PreviewManager } from './preview';
 
 let kind: InfovizoinTaskDefinition = {
 	type: 'shell'
@@ -13,7 +14,10 @@ let kind: InfovizoinTaskDefinition = {
 let taskProvider: vscode.Disposable | undefined;
 export function activate(_context: vscode.ExtensionContext): void {
 	console.log('Congratulations, your extension "Infovizion" is now active!');
-	_registerCommand(_context, 'infovizion-tools.qvd_preview', previewQvd);
+	const previewManager = new PreviewManager(_context.extensionUri);
+	_context.subscriptions.push(vscode.window.registerCustomEditorProvider(PreviewManager.viewType, previewManager, {
+		supportsMultipleEditorsPerDocument: true,
+	}))
 	_registerCommand(_context, 'infovizion-tools.expressions_to_json', () => {	
 		inqlikEditorTask( ['expression', 'convert-to-json'],'Qlik Expression. Convert to JSON');
 	});

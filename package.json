@@ -15,13 +15,25 @@
         "Programming Languages"
     ],
     "activationEvents": [
-        "onCommand:infovizion-tools.qvd_preview",
+        "onCustomEditor:qvdPreview.previewEditor",
         "onCommand:infovizion-tools.qvs_check",
         "onCommand:infovizion-tools.qvs_check_and_reload",
         "onCommand:infovizion-tools.expressions_to_json"
     ],
     "main": "./dist/extension.js",
     "contributes": {
+        "customEditors": [
+            {
+              "viewType": "qvdPreview.previewEditor",
+              "displayName": "QVD Preview",
+              "priority": "builtin",
+              "selector": [
+                {
+                  "filenamePattern": "*.qvd"
+                }
+              ]
+            }
+          ],
         "configuration": {
             "title": "infovizion-tools",
             "properties": {
@@ -42,11 +54,6 @@
             }
           },
         "commands": [
-            {
-                "command": "infovizion-tools.qvd_preview",
-                "title": "Preview a QVD file",
-                "category": "Infovizion"
-            },
             {
                 "command": "infovizion-tools.expressions_migrate",
                 "title": "Mirgate expression file to new format (App.variables)",
@@ -81,13 +88,6 @@
             }
         ],
         "menus": {
-            "explorer/context": [
-                {
-                    "when": "resourceLangId == qvd",
-                    "command": "infovizion-tools.qvd_preview",
-                    "group": "navigation"
-                }
-            ],
             "editor/context": [
                 {
                     "command": "infovizion-tools.expressions_migrate",
@@ -114,10 +114,6 @@
                 {
                     "command": "infovizion-tools.expressions_to_json",
                     "when": "editorLangId == qlik-expressions"
-                },
-                {
-                    "command": "infovizion-tools.qvd_preview",
-                    "when": "false"
                 }
             ]
         },
