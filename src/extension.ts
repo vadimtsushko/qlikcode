@@ -12,9 +12,12 @@ let kind: InfovizoinTaskDefinition = {
 	type: 'shell'
 };
 let taskProvider: vscode.Disposable | undefined;
+let ivtoolPath: string;
 export function activate(_context: vscode.ExtensionContext): void {
 	console.log('Congratulations, your extension "Infovizion" is now active!');
-	const previewManager = new PreviewManager(_context.extensionUri);
+	ivtoolPath = _context.extensionUri.fsPath + '/dist/windows/ivtool.exe';
+	const previewManager = new PreviewManager(_context.extensionUri, ivtoolPath);
+	console.log(ivtoolPath);
 	_context.subscriptions.push(vscode.window.registerCustomEditorProvider(PreviewManager.viewType, previewManager, {
 		supportsMultipleEditorsPerDocument: true,
 	}))
@@ -45,7 +48,7 @@ function inqlikEditorTask(args: string[], description: string) {
 	}
 	let filePath = textEditor.document.fileName;
 	args.push(filePath);
-	let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qlik-expressions', new vscode.ShellExecution('ivtool', args),
+	let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qlik-expressions', new vscode.ShellExecution(ivtoolPath, args),
 		'$qlik-expressions');
 	vscode.tasks.executeTask(task);
 }
@@ -55,34 +58,15 @@ function qvsEditorTask(args: string[], description: string) {
 		return;
 	}
 	let filePath = textEditor.document.fileName;
+	args.push('--suppress-error-codes');
 	args.push(filePath);
-	let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qvs', new vscode.ShellExecution('ivtool', args),
+	let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qvs', new vscode.ProcessExecution(ivtoolPath, args),
 		'$qlik');
 	vscode.tasks.executeTask(task);
 }
 function _registerCommand(_context: vscode.ExtensionContext, commandId: string, callback: (...args: any[]) => any, thisArg?: any) {
 	let command = vscode.commands.registerCommand(commandId, callback);
 	_context.subscriptions.push(command);
-}
-function previewQvd(file: vscode.Uri) {
-	const title = file.path.split('/').pop() + '';
-	const panel = vscode.window.createWebviewPanel(
-		'zip_preview',
-		title,
-		vscode.ViewColumn.One,
-		{
-			enableScripts: true
-		}
-	);
-	let filePath = file.path;
-	if (filePath.startsWith('/')) {
-		filePath = filePath.substring(1);
-	}
-	let commandLine = `ivtool qvd --format html ${filePath}`;
-	console.log(commandLine);
-	let content = cp.execSync(commandLine, { encoding: 'utf8' });
-	console.log(content);
-	panel.webview.html = content;
 }
 
 let _channel: vscode.OutputChannel;

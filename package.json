@@ -3,7 +3,8 @@
     "displayName": "infoVizion Tools",
     "description": "Set of development tools used in InfoVizion for Qlik projects",
     "publisher": "InfoVizion",
-    "version": "0.0.5",
+    "license": "0BSD",
+    "version": "0.3.0",
     "engines": {
         "vscode": "^1.52.0"
     },
@@ -26,7 +27,7 @@
             {
               "viewType": "qvdPreview.previewEditor",
               "displayName": "QVD Preview",
-              "priority": "builtin",
+              "priority": "default",
               "selector": [
                 {
                   "filenamePattern": "*.qvd"

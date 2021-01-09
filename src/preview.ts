@@ -16,7 +16,10 @@ export class PreviewManager implements vscode.CustomReadonlyEditorProvider {
 
 	constructor(
 		private readonly extensionRoot: vscode.Uri,
-	) { }
+		private readonly ivtoolPath: string,
+	) {
+
+	 }
 
 	public async openCustomDocument(uri: vscode.Uri) {
 		return { uri, dispose: () => { } };
@@ -26,7 +29,7 @@ export class PreviewManager implements vscode.CustomReadonlyEditorProvider {
 		document: vscode.CustomDocument,
 		webviewEditor: vscode.WebviewPanel,
 	): Promise<void> {
-		const preview = new Preview(this.extensionRoot, document.uri, webviewEditor);
+		const preview = new Preview(this.extensionRoot, document.uri, webviewEditor, this.ivtoolPath);
 		this._previews.add(preview);
 		this.setActivePreview(preview);
 
@@ -66,13 +69,13 @@ class Preview extends Disposable {
 	private _previewState = PreviewState.Visible;
 	private _imageSize: string | undefined;
 	private _imageBinarySize: number | undefined;
-
 	private readonly emptyPngDataUri = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAEElEQVR42gEFAPr/AP///wAI/AL+Sr4t6gAAAABJRU5ErkJggg==';
 
 	constructor(
 		private readonly extensionRoot: vscode.Uri,
 		private readonly resource: vscode.Uri,
 		private readonly webviewEditor: vscode.WebviewPanel,
+		private readonly ivtoolPath: string,
 	) {
 		super();
 		const resourceRoot = resource.with({
@@ -187,10 +190,9 @@ class Preview extends Disposable {
 			isMac: process.platform === 'darwin',
 			src: await this.getResourcePath(this.webviewEditor, this.resource, version),
 		};
-        let commandLine = `ivtool qvd --format html ${this.resource.fsPath}`;
+        let commandLine = `${this.ivtoolPath} qvd --format html ${this.resource.fsPath}`;
 		console.log(commandLine);
 		let content = cp.execSync(commandLine, { encoding: 'utf8' });
-		console.log(content);
 		return content;
 	}
 
