@@ -25,35 +25,43 @@
     "contributes": {
         "customEditors": [
             {
-              "viewType": "qvdPreview.previewEditor",
-              "displayName": "QVD Preview",
-              "priority": "default",
-              "selector": [
-                {
-                  "filenamePattern": "*.qvd"
-                }
-              ]
+                "viewType": "qvdPreview.previewEditor",
+                "displayName": "QVD Preview",
+                "priority": "default",
+                "selector": [
+                    {
+                        "filenamePattern": "*.qvd"
+                    }
+                ]
             }
-          ],
+        ],
         "configuration": {
             "title": "infovizion-tools",
             "properties": {
-              "infovizion.useCodeSnippetsOnMethodSuggest": {
-                "type": "boolean",
-                "default": false,
-                "description": "Complete functions with their parameter signature."
-              },
-              "infovizion.run_command": {
-                "type": ["string"],
-                "default": "just_reload",
-                "enum": ["just_reload","check_and_reload","force_reload"],
-                "enumDescriptions": ["Just reload qvw, without qvs syntax check",
-                    "Check script for errors and run reload task on success",
-                    "Check syntax and run reload task regardless of errors"],
-                "description": "Specifies parameters for default run action (by F5)"
-              }
+                "infovizion.useCodeSnippetsOnMethodSuggest": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Complete functions with their parameter signature."
+                },
+                "infovizion.run_command": {
+                    "type": [
+                        "string"
+                    ],
+                    "default": "just_reload",
+                    "enum": [
+                        "just_reload",
+                        "check_and_reload",
+                        "force_reload"
+                    ],
+                    "enumDescriptions": [
+                        "Just reload qvw, without qvs syntax check",
+                        "Check script for errors and run reload task on success",
+                        "Check syntax and run reload task regardless of errors"
+                    ],
+                    "description": "Specifies parameters for default run action (by F5)"
+                }
             }
-          },
+        },
         "commands": [
             {
                 "command": "infovizion-tools.expressions_migrate",
