@@ -7,7 +7,6 @@ import * as fs from 'fs';
 import * as cp from 'child_process';
 import * as vscode from 'vscode';
 import { PreviewManager } from './preview';
-var isWindows = require('is-windows');
 let kind: InfovizoinTaskDefinition = {
 	type: 'shell'
 };
@@ -16,7 +15,9 @@ let ivtoolPath: string;
 export function activate(_context: vscode.ExtensionContext): void {
 	console.log('Congratulations, your extension "Infovizion" is now active!');
 	ivtoolPath = _context.extensionUri.fsPath + '/dist/windows/ivtool.exe';
-	if (!isWindows) {
+
+	var useExternalIvtool = vscode.workspace.getConfiguration().get('infovizion.useExternalIvtool',false);
+	if (useExternalIvtool) {
 		ivtoolPath = 'ivtool';
 	}
 	const previewManager = new PreviewManager(_context.extensionUri, ivtoolPath);
@@ -33,7 +34,7 @@ export function activate(_context: vscode.ExtensionContext): void {
 	_registerCommand(_context, 'infovizion-tools.qvs_check', () => {	
 		qvsEditorTask( ['qvs', '--command', 'check'],'Check Qlik load script for errors');
 	});
-	var runCommandParam = vscode.workspace.getConfiguration().get('infovizion.run_command','just_reload');
+	var runCommandParam = vscode.workspace.getConfiguration().get('infovizion.runCommand','just_reload');
 	_registerCommand(_context, 'infovizion-tools.qvs_check_and_reload', () => {	
 		qvsEditorTask( ['qvs', '--command', runCommandParam],'Check script for errors and run reload task on success');
 	});

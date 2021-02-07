@@ -4,7 +4,7 @@
     "description": "Set of development tools used in InfoVizion for Qlik projects",
     "publisher": "InfoVizion",
     "license": "0BSD",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "engines": {
         "vscode": "^1.52.0"
     },
@@ -38,12 +38,12 @@
         "configuration": {
             "title": "infovizion-tools",
             "properties": {
-                "infovizion.useCodeSnippetsOnMethodSuggest": {
+                "infovizion.useExternalIvtool": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Complete functions with their parameter signature."
+                    "description": "Use external ivtool executable"
                 },
-                "infovizion.run_command": {
+                "infovizion.runCommand": {
                     "type": [
                         "string"
                     ],
