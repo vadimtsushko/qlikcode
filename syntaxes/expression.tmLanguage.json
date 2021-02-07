@@ -79,7 +79,7 @@
     "expressionName": {
       "patterns": [
         {
-          "match": "^\\s*(set|let|name|family|type):\\s*(\\w[\\w_.]+)\\s*$",
+          "match": "^\\s*(set|name):\\s*(\\w[\\w_.]+)\\s*$",
           "captures": {
             "1": {
               "name": "entity.name.tag.qlik-expressions"
@@ -95,7 +95,7 @@
       "patterns": [
         {
           "name": "meta.tag.qlik-expressions",
-          "match": "(label|selectorLabel|format):(.*)",
+          "match": "(label|selectorLabel|format|family|pragma|type|calendar|width|backgroundColor):(.*)",
           "captures": {
             "1": {
               "name": "entity.name.tag.qlik-expressions"

@@ -7,7 +7,7 @@ import * as fs from 'fs';
 import * as cp from 'child_process';
 import * as vscode from 'vscode';
 import { PreviewManager } from './preview';
-
+var isWindows = require('is-windows');
 let kind: InfovizoinTaskDefinition = {
 	type: 'shell'
 };
@@ -16,6 +16,9 @@ let ivtoolPath: string;
 export function activate(_context: vscode.ExtensionContext): void {
 	console.log('Congratulations, your extension "Infovizion" is now active!');
 	ivtoolPath = _context.extensionUri.fsPath + '/dist/windows/ivtool.exe';
+	if (!isWindows) {
+		ivtoolPath = 'ivtool';
+	}
 	const previewManager = new PreviewManager(_context.extensionUri, ivtoolPath);
 	console.log(ivtoolPath);
 	_context.subscriptions.push(vscode.window.registerCustomEditorProvider(PreviewManager.viewType, previewManager, {
