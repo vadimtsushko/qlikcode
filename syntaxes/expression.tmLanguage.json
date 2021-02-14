@@ -142,7 +142,7 @@
       "patterns": [
         {
           "name": "comment.line.double-slash.qlik-expressions",
-          "match": "^# .*"
+          "match": "^#.*"
         }
       ]
     }
