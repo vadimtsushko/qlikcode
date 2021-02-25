@@ -4,7 +4,7 @@
     "description": "Set of development tools used in InfoVizion for Qlik projects",
     "publisher": "InfoVizion",
     "license": "0BSD",
-    "version": "0.3.7",
+    "version": "0.3.8",
     "engines": {
         "vscode": "^1.52.0"
     },
@@ -16,10 +16,9 @@
         "Programming Languages"
     ],
     "activationEvents": [
-        "onCustomEditor:qvdPreview.previewEditor",
-        "onCommand:infovizion-tools.qvs_check",
-        "onCommand:infovizion-tools.qvs_check_and_reload",
-        "onCommand:infovizion-tools.expressions_to_json"
+        "onLanguage:qlik",
+        "onLanguage:qlik-expressions",
+        "onCustomEditor:qvdPreview.previewEditor"
     ],
     "main": "./dist/extension.js",
     "contributes": {
