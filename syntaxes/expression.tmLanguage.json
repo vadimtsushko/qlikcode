@@ -2,7 +2,7 @@
   "name": "Qlik expression files (InfoVizion format)",
   "fileTypes": [
     "qlikview-vars",
-    "variables"
+    "qlik-measures"
   ],
   "scopeName": "source.qlik-expressions",
   "uuid": "6b77dc03-7003-41f4-a9f6-287849f88d5f",
@@ -12,9 +12,6 @@
     },
     {
       "include": "#pragma"
-    },
-    {
-      "include": "#section"
     },
     {
       "include": "#newDocument"
@@ -120,21 +117,6 @@
         {
           "name": "keyword.control.qlik-expressions",
           "match": "^pragma: skipError$"
-        }
-      ]
-    },
-    "section": {
-      "patterns": [
-        {
-          "match": "^(#SECTION )\\s*(.+)$",
-          "captures": {
-            "1": {
-              "name": "comment.line.double-dash.qlik-expressions"
-            },
-            "2": {
-              "name": "support.variable.qlik-expressions meta.name.section.qlik-expressions"
-            }
-          }
         }
       ]
     },

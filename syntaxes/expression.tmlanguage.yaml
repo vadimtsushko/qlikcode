@@ -1,6 +1,6 @@
 # [PackageDev] target_format: plist, ext: tmLanguage
 name: Qlik expression files (InfoVizion format)
-fileTypes: [qlikview-vars, variables]
+fileTypes: [qlikview-vars, qlik-measures]
 
 scopeName: source.qlik-expressions
 
@@ -11,7 +11,7 @@ patterns:
 - include: '#expressionName'
 - include: '#pragma'
 
-- include: '#section'
+# - include: '#section'
 
 - include: '#newDocument'
 
@@ -66,12 +66,12 @@ repository:
     patterns:
     - name: keyword.control.qlik-expressions
       match: '^pragma: skipError$'
-  section:
-    patterns:
-    - match: ^(#SECTION )\s*(.+)$
-      captures:
-        '1': {name: comment.line.double-dash.qlik-expressions}
-        '2': {name: support.variable.qlik-expressions meta.name.section.qlik-expressions}
+  # section:
+  #   patterns:
+  #   - match: ^(#SECTION )\s*(.+)$
+  #     captures:
+  #       '1': {name: comment.line.double-dash.qlik-expressions}
+  #       '2': {name: support.variable.qlik-expressions meta.name.section.qlik-expressions}
   comment:
     patterns:
     - name: comment.line.double-slash.qlik-expressions
