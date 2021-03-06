@@ -7,22 +7,20 @@ import * as fs from 'fs';
 import * as cp from 'child_process';
 import * as vscode from 'vscode';
 import { PreviewManager } from './preview';
+import { setInternalIvtoolPath } from './ivtool_path';
+
+import { getIvtoolPath } from './ivtool_path';
 interface InfovizoinTaskDefinition extends vscode.TaskDefinition {}
 let kind: InfovizoinTaskDefinition = {
 	type: 'shell'
 };
 let taskProvider: vscode.Disposable | undefined;
-let ivtoolPath: string;
 export function activate(_context: vscode.ExtensionContext): void {
 	console.log('Congratulations, your extension "Infovizion" is now active!');
-	ivtoolPath = _context.extensionUri.fsPath + '/dist/windows/ivtool.exe';
+	setInternalIvtoolPath(_context.extensionUri.fsPath + '/dist/windows/ivtool.exe');
 
-	var useExternalIvtool = vscode.workspace.getConfiguration().get('infovizion.useExternalIvtool',false);
-	if (useExternalIvtool) {
-		ivtoolPath = 'ivtool';
-	}
-	const previewManager = new PreviewManager(_context.extensionUri, ivtoolPath);
-	console.log(ivtoolPath);
+	
+	const previewManager = new PreviewManager(_context.extensionUri);
 	_context.subscriptions.push(vscode.window.registerCustomEditorProvider(PreviewManager.viewType, previewManager, {
 		supportsMultipleEditorsPerDocument: true,
 	}))
@@ -55,7 +53,7 @@ function onDidSaveTextDocument(document: vscode.TextDocument) {
   if (filePath.endsWith('.qlikview-vars')) {
   let args = ['expression', 'convert-to-json', '--simple',filePath];
   let description = 'Qlik Expression. Convert to JSON';
-  let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qlik-expressions', new vscode.ProcessExecution(ivtoolPath, args),
+  let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qlik-expressions', new vscode.ProcessExecution(getIvtoolPath(), args),
 		'$qlik-expressions'); 
 	vscode.tasks.executeTask(task);
 
@@ -68,7 +66,7 @@ function inqlikEditorTask(args: string[], description: string) {
 	}
 	let filePath = textEditor.document.fileName;
 	args.push(filePath);
-	let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qlik-expressions', new vscode.ProcessExecution(ivtoolPath, args),
+	let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qlik-expressions', new vscode.ProcessExecution(getIvtoolPath(), args),
 		'$qlik-expressions');
 	vscode.tasks.executeTask(task);
 }
@@ -80,7 +78,7 @@ function qvsEditorTask(args: string[], description: string) {
 	let filePath = textEditor.document.fileName;
 	args.push('--suppress-error-codes');
 	args.push(filePath);
-	let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qvs', new vscode.ProcessExecution(ivtoolPath, args),
+	let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qvs', new vscode.ProcessExecution(getIvtoolPath(), args),
 		'$qlik');
 	vscode.tasks.executeTask(task);
 }

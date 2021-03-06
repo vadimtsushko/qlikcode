@@ -6,7 +6,7 @@
 import * as vscode from 'vscode';
 import { Disposable } from './dispose';
 import * as cp from 'child_process';
-
+import { getIvtoolPath } from './ivtool_path';
 export class PreviewManager implements vscode.CustomReadonlyEditorProvider {
 
 	public static readonly viewType = 'qvdPreview.previewEditor';
@@ -15,8 +15,8 @@ export class PreviewManager implements vscode.CustomReadonlyEditorProvider {
 	private _activePreview: Preview | undefined;
 
 	constructor(
-		private readonly extensionRoot: vscode.Uri,
-		private readonly ivtoolPath: string,
+		private readonly extensionRoot: vscode.Uri
+		
 	) {
 
 	 }
@@ -29,7 +29,7 @@ export class PreviewManager implements vscode.CustomReadonlyEditorProvider {
 		document: vscode.CustomDocument,
 		webviewEditor: vscode.WebviewPanel,
 	): Promise<void> {
-		const preview = new Preview(this.extensionRoot, document.uri, webviewEditor, this.ivtoolPath);
+		const preview = new Preview(this.extensionRoot, document.uri, webviewEditor, getIvtoolPath());
 		this._previews.add(preview);
 		this.setActivePreview(preview);
 

@@ -1,10 +1,10 @@
 {
     "name": "infovizion-tools",
-    "displayName": "infoVizion Tools",
+    "displayName": "InfoVizion Tools",
     "description": "Set of development tools used in InfoVizion for Qlik projects",
-    "publisher": "InfoVizion",
+    "publisher": "infovizion",
     "license": "0BSD",
-    "version": "0.3.11",
+    "version": "0.3.12",
     "engines": {
         "vscode": "^1.52.0"
     },
