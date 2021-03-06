@@ -4,7 +4,7 @@
     "description": "Set of development tools used in InfoVizion for Qlik projects",
     "publisher": "infovizion",
     "license": "0BSD",
-    "version": "0.3.12",
+    "version": "0.3.13",
     "engines": {
         "vscode": "^1.52.0"
     },
@@ -42,6 +42,11 @@
                     "default": false,
                     "description": "Use external ivtool executable"
                 },
+                "infovizion.qvwTemplate": {
+                    "type": "string",
+                    "default": "c:\\programs\\bin\\_newFileTemplate.qvw",
+                    "description": "Use external ivtool executable"
+                },
                 "infovizion.runCommand": {
                     "type": [
                         "string"
@@ -73,8 +78,18 @@
                 "category": "Infovizion"
             },
             {
-                "command": "infovizion-tools.qvs_check_and_reload",
+                "command": "infovizion-tools.qvs_run",
                 "title": "Check and reload Qlik load script",
+                "category": "Infovizion"
+            },
+            {
+                "command": "infovizion-tools.qvs_open",
+                "title": "Open qvw file",
+                "category": "Infovizion"
+            },
+            {
+                "command": "infovizion-tools.qvs_log",
+                "title": "Open log file for current script",
                 "category": "Infovizion"
             },
             {
@@ -90,7 +105,7 @@
                 "key": "f5"
             },
             {
-                "command": "infovizion-tools.qvs_check_and_reload",
+                "command": "infovizion-tools.qvs_run",
                 "when": "editorLangId == qlik",
                 "key": "f5"
             }
@@ -108,7 +123,7 @@
                     "group": "build"
                 },
                 {
-                    "command": "infovizion-tools.qvs_check_and_reload",
+                    "command": "infovizion-tools.qvs_run",
                     "when": "editorLangId == qlik",
                     "group": "build"
                 },

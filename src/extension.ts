@@ -33,10 +33,13 @@ export function activate(_context: vscode.ExtensionContext): void {
 	_registerCommand(_context, 'infovizion-tools.qvs_check', () => {	
 		qvsEditorTask( ['qvs', '--command', 'check'],'Check Qlik load script for errors');
 	});
-	var runCommandParam = vscode.workspace.getConfiguration().get('infovizion.runCommand','just_reload');
-	_registerCommand(_context, 'infovizion-tools.qvs_check_and_reload', () => {	
-		qvsEditorTask( ['qvs', '--command', runCommandParam],'Check script for errors and run reload task on success');
+	_registerCommand(_context, 'infovizion-tools.qvs_open', () => {	
+		qvsEditorTask( ['qvs', '--command', 'open'],'Open qvw file');
 	});
+	_registerCommand(_context, 'infovizion-tools.qvs_run', () => {	
+		qvsEditorTask( [],'Run default task for qvs script');
+	});
+	_registerCommand(_context, 'infovizion-tools.qvs_log', ()=> openLogFile());
 	vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
 		onDidSaveTextDocument(document);
 	});
@@ -71,12 +74,22 @@ function inqlikEditorTask(args: string[], description: string) {
 	vscode.tasks.executeTask(task);
 }
 function qvsEditorTask(args: string[], description: string) {
+	if (args.length == 0) {
+		var runCommandParam = vscode.workspace.getConfiguration().get('infovizion.runCommand','just_reload');
+        args = ['qvs', '--command', runCommandParam];
+	}
+
 	let textEditor = vscode.window.activeTextEditor;
 	if (textEditor === undefined) {
 		return;
 	}
 	let filePath = textEditor.document.fileName;
 	args.push('--suppress-error-codes');
+	var newFileTemplatePath = vscode.workspace.getConfiguration().get('infovizion.qvwTemplate','c:\\programs\\bin\\_newFileTemplate.qvw');
+	if (fs.existsSync(newFileTemplatePath)) {
+		args.push('--qvw-template')
+		args.push(newFileTemplatePath);
+	}
 	args.push(filePath);
 	let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qvs', new vscode.ProcessExecution(getIvtoolPath(), args),
 		'$qlik');
@@ -85,6 +98,30 @@ function qvsEditorTask(args: string[], description: string) {
 function _registerCommand(_context: vscode.ExtensionContext, commandId: string, callback: (...args: any[]) => any, thisArg?: any) {
 	let command = vscode.commands.registerCommand(commandId, callback);
 	_context.subscriptions.push(command);
+}
+
+function openLogFile(): void {
+   console.log('openLogFile');
+   let textEditor = vscode.window.activeTextEditor;
+	if (textEditor === undefined) {
+		return;
+	}
+	var firstLine = textEditor.document.lineAt(0).text.trim();
+	if (!firstLine.startsWith('//#!')) {
+       return;
+	}
+	var appDir = firstLine.replace('//#!','');
+	var logFileName = path.basename(textEditor.document.fileName).toUpperCase().replace('.QVS','.qvw.log');
+	console.log(logFileName);
+	var logPath = path.normalize(path.join(path.dirname(textEditor.document.fileName), appDir, logFileName));
+	console.log(logPath);
+    vscode.workspace.openTextDocument(logPath).then((a: vscode.TextDocument) => {
+    vscode.window.showTextDocument(a, 1, false).then(e => {
+    });
+}, (error: any) => {
+    console.error(error);
+    debugger;
+});
 }
 
 let _channel: vscode.OutputChannel;
