@@ -84,11 +84,50 @@ function qvsEditorTask(args: string[], description: string) {
 		return;
 	}
 	let filePath = textEditor.document.fileName;
-	args.push('--suppress-error-codes');
-	var newFileTemplatePath = vscode.workspace.getConfiguration().get('infovizion.qvwTemplate','c:\\programs\\bin\\_newFileTemplate.qvw');
-	if (fs.existsSync(newFileTemplatePath)) {
+	if (vscode.workspace.getConfiguration().get('infovizion.suppressErrorCodes')) {
+	  args.push('--suppress-error-codes');
+	}
+	var senseMode = vscode.workspace.getConfiguration().get('infovizion.sense.senseMode');
+	console.log(`qvsEditorTask ${senseMode}`);
+	if (senseMode) {
+		args.push('--sense-mode');
+		var value = vscode.workspace.getConfiguration().get('infovizion.sense.host'); 
+		if (`${value}`.trim() !== '') {
+		  args.push('--sense-host')
+		  args.push(`${value}`);
+		}
+		value = vscode.workspace.getConfiguration().get('infovizion.sense.port'); 
+		args.push('--sense-port')
+		args.push(`${value}`);
+		value = vscode.workspace.getConfiguration().get('infovizion.sense.userDir'); 
+		if (`${value}`.trim() !== '') {
+		  args.push('--sense-user-dir')
+		  args.push(`${value}`);
+		}
+		value = vscode.workspace.getConfiguration().get('infovizion.sense.userId');
+		if (`${value}`.trim() !== '') {
+		  args.push('--sense-user-id')
+		  args.push(`${value}`);
+		}
+		value = vscode.workspace.getConfiguration().get('infovizion.sense.logDir');
+		args.push('--sense-log-dir')
+		args.push(`${value}`);
+		value = vscode.workspace.getConfiguration().get('infovizion.sense.logArchivedDir');
+		args.push('--sense-log-archived-dir')
+		args.push(`${value}`);
+		value = vscode.workspace.getConfiguration().get('infovizion.sense.sertificatesDir');
+		args.push('--sense-sertificates-dir')
+		args.push(`${value}`);
+		value = vscode.workspace.getConfiguration().get('infovizion.sense.etlMapDir');
+		args.push('--sense-etl-map-dir')
+		args.push(`${value}`);
+       
+	} else {
+	  var newFileTemplatePath = vscode.workspace.getConfiguration().get('infovizion.qvwTemplate','c:\\programs\\bin\\_newFileTemplate.qvw');
+	  if (fs.existsSync(newFileTemplatePath)) {
 		args.push('--qvw-template')
 		args.push(newFileTemplatePath);
+	  }
 	}
 	args.push(filePath);
 	let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qvs', new vscode.ProcessExecution(getIvtoolPath(), args),
@@ -101,26 +140,28 @@ function _registerCommand(_context: vscode.ExtensionContext, commandId: string, 
 }
 
 function openLogFile(): void {
-   console.log('openLogFile');
    let textEditor = vscode.window.activeTextEditor;
-	if (textEditor === undefined) {
-		return;
-	}
+   if (textEditor === undefined) {
+	return;
+   }
+   var logFileName = path.basename(textEditor.document.fileName).toUpperCase().replace('.QVS','.qvw.log');
+   var senseMode = vscode.workspace.getConfiguration().get('infovizion.sense.senseMode');
+   var appDir = 'logs';
+   if (!senseMode) {
 	var firstLine = textEditor.document.lineAt(0).text.trim();
-	if (!firstLine.startsWith('//#!')) {
-       return;
+	if (firstLine.startsWith('//#!')) {
+		appDir = firstLine.replace('//#!','');
+	} else {
+		appDir = '';
 	}
-	var appDir = firstLine.replace('//#!','');
-	var logFileName = path.basename(textEditor.document.fileName).toUpperCase().replace('.QVS','.qvw.log');
-	console.log(logFileName);
-	var logPath = path.normalize(path.join(path.dirname(textEditor.document.fileName), appDir, logFileName));
+   }
+	var logPath = path.normalize(path.join(path.dirname(textEditor.document.fileName), appDir, logFileName)).toLowerCase();
 	console.log(logPath);
     vscode.workspace.openTextDocument(logPath).then((a: vscode.TextDocument) => {
     vscode.window.showTextDocument(a, 1, false).then(e => {
     });
 }, (error: any) => {
     console.error(error);
-    debugger;
 });
 }
 
