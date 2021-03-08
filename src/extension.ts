@@ -87,7 +87,7 @@ function qvsEditorTask(args: string[], description: string) {
 	if (vscode.workspace.getConfiguration().get('infovizion.suppressErrorCodes')) {
 	  args.push('--suppress-error-codes');
 	}
-	var senseMode = vscode.workspace.getConfiguration().get('infovizion.sense.senseMode');
+	var senseMode = vscode.workspace.getConfiguration().get('infovizion.senseMode');
 	console.log(`qvsEditorTask ${senseMode}`);
 	if (senseMode) {
 		args.push('--sense-mode');
@@ -123,11 +123,14 @@ function qvsEditorTask(args: string[], description: string) {
 		args.push(`${value}`);
        
 	} else {
-	  var newFileTemplatePath = vscode.workspace.getConfiguration().get('infovizion.qvwTemplate','c:\\programs\\bin\\_newFileTemplate.qvw');
-	  if (fs.existsSync(newFileTemplatePath)) {
+	  var newFileTemplatePath = vscode.workspace.getConfiguration().get('infovizion.qlikview.qvwTemplate');
 		args.push('--qvw-template')
-		args.push(newFileTemplatePath);
-	  }
+		args.push(`${newFileTemplatePath}`);
+	  
+	  var qvExe = vscode.workspace.getConfiguration().get('infovizion.qlikview.executable');
+		args.push('--qlikview')
+		args.push(`${qvExe}`);
+
 	}
 	args.push(filePath);
 	let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qvs', new vscode.ProcessExecution(getIvtoolPath(), args),
@@ -145,7 +148,7 @@ function openLogFile(): void {
 	return;
    }
    var logFileName = path.basename(textEditor.document.fileName).toUpperCase().replace('.QVS','.qvw.log');
-   var senseMode = vscode.workspace.getConfiguration().get('infovizion.sense.senseMode');
+   var senseMode = vscode.workspace.getConfiguration().get('infovizion.senseMode');
    var appDir = 'logs';
    if (!senseMode) {
 	var firstLine = textEditor.document.lineAt(0).text.trim();

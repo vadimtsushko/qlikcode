@@ -47,10 +47,15 @@
                     "default": true,
                     "description": "Suppress error codes while reading QVS files"
                 },
-                "infovizion.qvwTemplate": {
+                "infovizion.qlikview.qvwTemplate": {
                     "type": "string",
                     "default": "c:\\programs\\bin\\_newFileTemplate.qvw",
                     "description": "Use external ivtool executable"
+                },
+                "infovizion.qlikview.executable": {
+                    "type": "string",
+                    "default": "C:\\Program Files\\QlikView\\qv.exew",
+                    "description": "Full path to QlikView Desktop executable"
                 },
                 "infovizion.runCommand": {
                     "type": [
@@ -69,7 +74,7 @@
                     ],
                     "description": "Specifies parameters for default run action (by F5)"
                 },
-                "infovizion.sense.senseMode": {
+                "infovizion.senseMode": {
                     "type": "boolean",
                     "default": false,
                     "description": "Use Qlik Sense Enterprise to run qvs scripts as Qlik Sense reload tasks"
