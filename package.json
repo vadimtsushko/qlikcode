@@ -37,27 +37,17 @@
         "configuration": {
             "title": "infovizion-tools",
             "properties": {
-                "infovizion.useExternalIvtool": {
+                "infovizion.1.useExternalIvtool": {
                     "type": "boolean",
                     "default": false,
                     "description": "Use external ivtool executable"
                 },
-                "infovizion.suppressErrorCodes": {
+                "infovizion.1.suppressErrorCodes": {
                     "type": "boolean",
                     "default": true,
                     "description": "Suppress error codes while reading QVS files"
                 },
-                "infovizion.qlikview.qvwTemplate": {
-                    "type": "string",
-                    "default": "c:\\programs\\bin\\_newFileTemplate.qvw",
-                    "description": "Use external ivtool executable"
-                },
-                "infovizion.qlikview.executable": {
-                    "type": "string",
-                    "default": "C:\\Program Files\\QlikView\\qv.exew",
-                    "description": "Full path to QlikView Desktop executable"
-                },
-                "infovizion.runCommand": {
+                "infovizion.1.runCommand": {
                     "type": [
                         "string"
                     ],
@@ -74,10 +64,15 @@
                     ],
                     "description": "Specifies parameters for default run action (by F5)"
                 },
-                "infovizion.senseMode": {
+                "infovizion.1.senseMode": {
                     "type": "boolean",
                     "default": false,
                     "description": "Use Qlik Sense Enterprise to run qvs scripts as Qlik Sense reload tasks"
+                },
+                "infovizion.qlikview.qvwTemplate": {
+                    "type": "string",
+                    "default": "c:\\programs\\bin\\_newFileTemplate.qvw",
+                    "description": "Use external ivtool executable"
                 },
                 "infovizion.sense.host": {
                     "type": "string",

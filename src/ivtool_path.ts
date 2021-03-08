@@ -5,7 +5,7 @@ export function setInternalIvtoolPath(defaultPath: string): void {
     console.log(ivtoolPath);
 } 
 export function getIvtoolPath(): string {
-    var useExternalIvtool = vscode.workspace.getConfiguration().get('infovizion.useExternalIvtool',false);
+    var useExternalIvtool = vscode.workspace.getConfiguration().get('infovizion.1.useExternalIvtool',false);
 	if (useExternalIvtool) {
 		return 'ivtool';
 	}

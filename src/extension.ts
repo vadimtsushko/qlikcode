@@ -75,7 +75,7 @@ function inqlikEditorTask(args: string[], description: string) {
 }
 function qvsEditorTask(args: string[], description: string) {
 	if (args.length == 0) {
-		var runCommandParam = vscode.workspace.getConfiguration().get('infovizion.runCommand','just_reload');
+		var runCommandParam = vscode.workspace.getConfiguration().get('infovizion.1.runCommand','just_reload');
         args = ['qvs', '--command', runCommandParam];
 	}
 
@@ -84,10 +84,10 @@ function qvsEditorTask(args: string[], description: string) {
 		return;
 	}
 	let filePath = textEditor.document.fileName;
-	if (vscode.workspace.getConfiguration().get('infovizion.suppressErrorCodes')) {
+	if (vscode.workspace.getConfiguration().get('infovizion.1.suppressErrorCodes')) {
 	  args.push('--suppress-error-codes');
 	}
-	var senseMode = vscode.workspace.getConfiguration().get('infovizion.senseMode');
+	var senseMode = vscode.workspace.getConfiguration().get('infovizion.1.senseMode');
 	console.log(`qvsEditorTask ${senseMode}`);
 	if (senseMode) {
 		args.push('--sense-mode');
@@ -126,10 +126,15 @@ function qvsEditorTask(args: string[], description: string) {
 	  var newFileTemplatePath = vscode.workspace.getConfiguration().get('infovizion.qlikview.qvwTemplate');
 		args.push('--qvw-template')
 		args.push(`${newFileTemplatePath}`);
-	  
-	  var qvExe = vscode.workspace.getConfiguration().get('infovizion.qlikview.executable');
-		args.push('--qlikview')
-		args.push(`${qvExe}`);
+	  ///TODO Надо разбораться как пути с пробелами использовать
+	//   "infovizion.qlikview.qvwTemplate": {
+	// 	"type": "string",
+	// 	"default": "c:\\programs\\bin\\_newFileTemplate.qvw",
+	// 	"description": "Use external ivtool executable"
+	// }
+	//   var qvExe = vscode.workspace.getConfiguration().get('infovizion.qlikview.executable');
+	// 	args.push('--qlikview')
+	// 	args.push(`${qvExe}`);
 
 	}
 	args.push(filePath);
@@ -148,7 +153,7 @@ function openLogFile(): void {
 	return;
    }
    var logFileName = path.basename(textEditor.document.fileName).toUpperCase().replace('.QVS','.qvw.log');
-   var senseMode = vscode.workspace.getConfiguration().get('infovizion.senseMode');
+   var senseMode = vscode.workspace.getConfiguration().get('infovizion.1.senseMode');
    var appDir = 'logs';
    if (!senseMode) {
 	var firstLine = textEditor.document.lineAt(0).text.trim();
