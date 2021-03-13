@@ -4,7 +4,7 @@
     "description": "Set of development tools used in InfoVizion for Qlik projects",
     "publisher": "infovizion",
     "license": "0BSD",
-    "version": "0.3.16",
+    "version": "0.3.17",
     "engines": {
         "vscode": "^1.52.0"
     },
@@ -69,6 +69,11 @@
                     "default": false,
                     "description": "Use Qlik Sense Enterprise to run qvs scripts as Qlik Sense reload tasks"
                 },
+                "infovizion.qlikview.executable": {
+                    "type": "string",
+                    "default": "c:\\Program Files\\QlikView\\bin\\qv.exe",
+                    "description": "Full path to QlikView Desktop executable"
+                },                
                 "infovizion.qlikview.qvwTemplate": {
                     "type": "string",
                     "default": "c:\\programs\\bin\\_newFileTemplate.qvw",

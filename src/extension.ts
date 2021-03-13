@@ -73,6 +73,9 @@ function inqlikEditorTask(args: string[], description: string) {
 		'$qlik-expressions');
 	vscode.tasks.executeTask(task);
 }
+function _getProperty(propName: string): string {
+	return String(vscode.workspace.getConfiguration().get(propName));
+}
 function qvsEditorTask(args: string[], description: string) {
 	if (args.length == 0) {
 		var runCommandParam = vscode.workspace.getConfiguration().get('infovizion.1.runCommand','just_reload');
@@ -123,22 +126,23 @@ function qvsEditorTask(args: string[], description: string) {
 		args.push(`${value}`);
        
 	} else {
-	  var newFileTemplatePath = vscode.workspace.getConfiguration().get('infovizion.qlikview.qvwTemplate');
+	  var newFileTemplatePath = _getProperty('infovizion.qlikview.qvwTemplate');
 		args.push('--qvw-template')
-		args.push(`${newFileTemplatePath}`);
+		args.push(newFileTemplatePath);
 	  ///TODO Надо разбораться как пути с пробелами использовать
-	//   "infovizion.qlikview.qvwTemplate": {
+	// "infovizion.qlikview.executable": {
 	// 	"type": "string",
-	// 	"default": "c:\\programs\\bin\\_newFileTemplate.qvw",
-	// 	"description": "Use external ivtool executable"
-	// }
-	//   var qvExe = vscode.workspace.getConfiguration().get('infovizion.qlikview.executable');
-	// 	args.push('--qlikview')
-	// 	args.push(`${qvExe}`);
+	// 	"default": "c:\\Program Files\\QlikView\\bin\\qv.exe",
+	// 	"description": "Full path to QlikView Desktop executable"
+	// },	
+	  var qvExe = _getProperty('infovizion.qlikview.executable');
+		args.push('--qlikview')
+		args.push(qvExe);
 
 	}
+	args.push('--script');
 	args.push(filePath);
-	let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qvs', new vscode.ProcessExecution(getIvtoolPath(), args),
+	let task = new vscode.Task(kind, vscode.TaskScope.Global, description, 'qvs', new vscode.ShellExecution(getIvtoolPath(), args),
 		'$qlik');
 	vscode.tasks.executeTask(task);
 }
