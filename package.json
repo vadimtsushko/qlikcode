@@ -4,7 +4,7 @@
     "description": "Set of development tools used in InfoVizion for Qlik projects",
     "publisher": "infovizion",
     "license": "0BSD",
-    "version": "0.3.17",
+    "version": "0.3.20",
     "engines": {
         "vscode": "^1.52.0"
     },
@@ -47,6 +47,11 @@
                     "default": true,
                     "description": "Suppress error codes while reading QVS files"
                 },
+                "infovizion.1.suppressVariablesCheck": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Do not check for undefined variables in dollar sign expansion"
+                },
                 "infovizion.1.runCommand": {
                     "type": [
                         "string"
@@ -79,42 +84,10 @@
                     "default": "c:\\programs\\bin\\_newFileTemplate.qvw",
                     "description": "Use external ivtool executable"
                 },
-                "infovizion.sense.host": {
+                "infovizion.sense.server-config": {
                     "type": "string",
-                    "description": "Sense host, exactly as in certificates, exported from QMC (and used in Qlik Sense installation)"
-                },
-                "infovizion.sense.port": {
-                    "type": "number",
-                    "default": 8088,
-                    "description": "Qlik Sense http port (https port can not be used)"
-                },
-                "infovizion.sense.userDir": {
-                    "type": "string",
-                    "description": "Sense user dir of user who will be running reload tasks"
-                },
-                "infovizion.sense.userId": {
-                    "type": "string",
-                    "description": "Sense user who will be running reload tasks (should have sufficient security rights for that)"
-                },
-                "infovizion.sense.logDir": {
-                    "type": "string",
-                    "default": "C:\\ProgramData\\Qlik\\Sense\\Log\\Script",
-                    "description": "Sense host, exactly as in certificates, exported from QMC (and used in Qlik Sense installation)"
-                },
-                "infovizion.sense.logArchivedDir": {
-                    "type": "string",
-                    "default": "C:\\ProgramData\\Qlik\\Sense\\Repository\\Archived Logs\\Script",
-                    "description": "Sense host, exactly as in certificates, exported from QMC (and used in Qlik Sense installation)"
-                },
-                "infovizion.sense.sertificatesDir": {
-                    "type": "string",
-                    "default": "C:\\Programs\\infovizion\\.certificates",
-                    "description": "Sense host, exactly as in certificates, exported from QMC (and used in Qlik Sense installation)"
-                },
-                "infovizion.sense.etlMapDir": {
-                    "type": "string",
-                    "default": "C:\\Programs\\infovizion\\etl",
-                    "description": "Directory of etl data files with information about links between QVS script file and corresponding Qlik Sense Reload Task"
+                    "default": "C:\\Programs\\infovizion\\config.yaml",
+                    "description": "Qlik Sense configuration file, in infovizion server format"
                 }
             }
         },

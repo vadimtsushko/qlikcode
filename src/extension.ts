@@ -76,6 +76,7 @@ function inqlikEditorTask(args: string[], description: string) {
 function _getProperty(propName: string): string {
 	return String(vscode.workspace.getConfiguration().get(propName));
 }
+
 function qvsEditorTask(args: string[], description: string) {
 	if (args.length == 0) {
 		var runCommandParam = vscode.workspace.getConfiguration().get('infovizion.1.runCommand','just_reload');
@@ -90,51 +91,50 @@ function qvsEditorTask(args: string[], description: string) {
 	if (vscode.workspace.getConfiguration().get('infovizion.1.suppressErrorCodes')) {
 	  args.push('--suppress-error-codes');
 	}
+	if (vscode.workspace.getConfiguration().get('infovizion.1.suppressVariablesCheck')) {
+	  args.push('--suppress-variables-check');
+	}
 	var senseMode = vscode.workspace.getConfiguration().get('infovizion.1.senseMode');
 	console.log(`qvsEditorTask ${senseMode}`);
 	if (senseMode) {
 		args.push('--sense-mode');
-		var value = vscode.workspace.getConfiguration().get('infovizion.sense.host'); 
-		if (`${value}`.trim() !== '') {
-		  args.push('--sense-host')
-		  args.push(`${value}`);
-		}
-		value = vscode.workspace.getConfiguration().get('infovizion.sense.port'); 
-		args.push('--sense-port')
-		args.push(`${value}`);
-		value = vscode.workspace.getConfiguration().get('infovizion.sense.userDir'); 
-		if (`${value}`.trim() !== '') {
-		  args.push('--sense-user-dir')
-		  args.push(`${value}`);
-		}
-		value = vscode.workspace.getConfiguration().get('infovizion.sense.userId');
-		if (`${value}`.trim() !== '') {
-		  args.push('--sense-user-id')
-		  args.push(`${value}`);
-		}
-		value = vscode.workspace.getConfiguration().get('infovizion.sense.logDir');
-		args.push('--sense-log-dir')
-		args.push(`${value}`);
-		value = vscode.workspace.getConfiguration().get('infovizion.sense.logArchivedDir');
-		args.push('--sense-log-archived-dir')
-		args.push(`${value}`);
-		value = vscode.workspace.getConfiguration().get('infovizion.sense.sertificatesDir');
-		args.push('--sense-sertificates-dir')
-		args.push(`${value}`);
-		value = vscode.workspace.getConfiguration().get('infovizion.sense.etlMapDir');
-		args.push('--sense-etl-map-dir')
-		args.push(`${value}`);
+		args.push('--server-config');
+		args.push(_getProperty('infovizion.sense.server-config'));
+		// var value = vscode.workspace.getConfiguration().get('infovizion.sense.host'); 
+		// if (`${value}`.trim() !== '') {
+		//   args.push('--sense-host')
+		//   args.push(`${value}`);
+		// }
+		// value = vscode.workspace.getConfiguration().get('infovizion.sense.port'); 
+		// args.push('--sense-port')
+		// args.push(`${value}`);
+		// value = vscode.workspace.getConfiguration().get('infovizion.sense.userDir'); 
+		// if (`${value}`.trim() !== '') {
+		//   args.push('--sense-user-dir')
+		//   args.push(`${value}`);
+		// }
+		// value = vscode.workspace.getConfiguration().get('infovizion.sense.userId');
+		// if (`${value}`.trim() !== '') {
+		//   args.push('--sense-user-id')
+		//   args.push(`${value}`);
+		// }
+		// value = vscode.workspace.getConfiguration().get('infovizion.sense.logDir');
+		// args.push('--sense-log-dir')
+		// args.push(`${value}`);
+		// value = vscode.workspace.getConfiguration().get('infovizion.sense.logArchivedDir');
+		// args.push('--sense-log-archived-dir')
+		// args.push(`${value}`);
+		// value = vscode.workspace.getConfiguration().get('infovizion.sense.sertificatesDir');
+		// args.push('--sense-sertificates-dir')
+		// args.push(`${value}`);
+		// value = vscode.workspace.getConfiguration().get('infovizion.sense.etlMapDir');
+		// args.push('--sense-etl-map-dir')
+		// args.push(`${value}`);
        
 	} else {
 	  var newFileTemplatePath = _getProperty('infovizion.qlikview.qvwTemplate');
 		args.push('--qvw-template')
 		args.push(newFileTemplatePath);
-	  ///TODO Надо разбораться как пути с пробелами использовать
-	// "infovizion.qlikview.executable": {
-	// 	"type": "string",
-	// 	"default": "c:\\Program Files\\QlikView\\bin\\qv.exe",
-	// 	"description": "Full path to QlikView Desktop executable"
-	// },	
 	  var qvExe = _getProperty('infovizion.qlikview.executable');
 		args.push('--qlikview')
 		args.push(qvExe);
@@ -229,3 +229,5 @@ function getOutputChannel(): vscode.OutputChannel {
 
 // function getWebviewContent(fileName: string) {
 // }
+
+
