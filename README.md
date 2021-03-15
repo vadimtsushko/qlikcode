@@ -18,7 +18,7 @@ Just click on QVD in left panel to see QVD metadata in preview window
 
 Extension works for files with extension `qlikview-vars`.
 
-For each save corresponding json file should be created. Only most severe errors would be checked on that state:
+For each save corresponding json file should be created. Only most severe errors would be checked on that stage:
 Some examples:
 
 - `--` instead of `---` tag as delimiter between expressions
