@@ -1,9 +1,5 @@
 # Change Log
 
-All notable changes to the "infovizion-tools" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+##  0.3.24 - 2021-03-24
+### Added
+- Support for several etl.yaml files in one etl project
